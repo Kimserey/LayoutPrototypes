@@ -19,7 +19,7 @@ namespace LayoutPrototypes
 			var total = new Label { Text = "$35.10", Style = Device.Styles.SubtitleStyle, HorizontalTextAlignment = TextAlignment.Center };
 			currentTotal.Children.Add(label);
 			currentTotal.Children.Add(total);
-			layout.Children.Add(currentTotal, new Rectangle(0, 0, 1, .4), AbsoluteLayoutFlags.All);
+			layout.Children.Add(currentTotal, new Rectangle(0, 0, 1, .2), AbsoluteLayoutFlags.All);
 
 			var listLayout = 
 				new ListView {
