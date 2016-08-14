@@ -16,7 +16,7 @@ namespace LayoutPrototypes
 				Padding = new Thickness { Top = 20, Bottom = 20 }
 			};
 			var label = new Label { Text = "Current total", Style = Device.Styles.TitleStyle, HorizontalTextAlignment = TextAlignment.Center };
-			var total = new Label { Text = "$35.10", HorizontalTextAlignment = TextAlignment.Center };
+			var total = new Label { Text = "$35.10", Style = Device.Styles.SubtitleStyle, HorizontalTextAlignment = TextAlignment.Center };
 			currentTotal.Children.Add(label);
 			currentTotal.Children.Add(total);
 			layout.Children.Add(currentTotal, new Rectangle(0, 0, 1, .4), AbsoluteLayoutFlags.All);
@@ -32,9 +32,8 @@ namespace LayoutPrototypes
 						})
 				};
 			var scroll = new ScrollView { Content = listLayout };
-			scroll.BackgroundColor = Color.Aqua;
 
-			layout.Children.Add(scroll, new Rectangle(0, .4, 1, .4), AbsoluteLayoutFlags.All);
+			layout.Children.Add(scroll, new Rectangle(0, 1, 1, .8), AbsoluteLayoutFlags.All);
 			this.Content = layout;
 		}
 
