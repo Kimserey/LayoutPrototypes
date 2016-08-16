@@ -182,11 +182,11 @@ namespace LayoutPrototypes
 				VerticalOptions = LayoutOptions.FillAndExpand,
 				SeparatorVisibility = SeparatorVisibility.None,
 				ItemTemplate = new DataTemplate(() => {
-					var cell = new StackLayout { Orientation = StackOrientation.Horizontal, Padding = new Thickness(10) };
+					var cell = new AbsoluteLayout();
 					var image = new Image();
 					var label = new Label { VerticalTextAlignment = TextAlignment.Center };
-					cell.Children.Add(image);
-					cell.Children.Add(label);
+                    cell.Children.Add(image, new Rectangle(0, 0, .2, 1), AbsoluteLayoutFlags.All);
+                    cell.Children.Add(label, new Rectangle(1, 0, .8, 1), AbsoluteLayoutFlags.All);
   				    label.SetBinding(Label.TextProperty, "Title");
 					image.SetBinding(Image.SourceProperty, "Icon");
 					return new ViewCell { View = cell };
@@ -199,12 +199,12 @@ namespace LayoutPrototypes
 			};
 
 			var layout = new StackLayout();
-			var imageLayout = new AbsoluteLayout();
-			var brand = new Label { Text = "My brand" };
-			imageLayout.Children.Add(brand, new Rectangle(0.5, 0.5, .8, .8), AbsoluteLayoutFlags.All);
+			var imageLayout = new AbsoluteLayout { BackgroundColor = Color.Purple };
+			var brand = new Label { Text = "My brand", HorizontalTextAlignment = TextAlignment.Center, VerticalTextAlignment = TextAlignment.Center, TextColor = Color.White };
+			imageLayout.Children.Add(brand, new Rectangle(0.5, 0.5, 100, 100), AbsoluteLayoutFlags.PositionProportional);
 			layout.Children.Add(imageLayout);
 			layout.Children.Add(list);
-			this.Content = list;
+			this.Content = layout;
 			this.Title = "Master page";
 		}
 	}
