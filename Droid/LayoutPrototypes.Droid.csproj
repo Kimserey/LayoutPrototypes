@@ -102,13 +102,7 @@
     <AndroidResource Include="Resources\layout\Tabbar.axml" />
     <AndroidResource Include="Resources\layout\Toolbar.axml" />
     <AndroidResource Include="Resources\values\styles.xml" />
-    <AndroidResource Include="Resources\drawable\icon.png" />
-    <AndroidResource Include="Resources\drawable-hdpi\icon.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\icon.png" />
-    <AndroidResource Include="Resources\drawable-xxhdpi\icon.png" />
     <AndroidResource Include="Resources\drawable\basket.png" />
-    <AndroidResource Include="Resources\drawable\search.png" />
-    <AndroidResource Include="Resources\drawable\info.png" />
     <AndroidResource Include="Resources\drawable\ic_home_black_24dp.png" />
     <AndroidResource Include="Resources\drawable-hdpi\ic_home_black_24dp.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\ic_home_black_24dp.png" />
