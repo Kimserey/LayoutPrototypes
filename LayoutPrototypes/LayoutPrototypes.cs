@@ -175,9 +175,9 @@ namespace LayoutPrototypes
 			{
 				ItemsSource = new List<MasterItem> {
 					new MasterItem("Overview", "ic_home_black_24dp.png", typeof(BasketPage)),
-					new MasterItem("Baskets", "basket.png", typeof(BasketPage)), 
-					new MasterItem("Item lookup", "search.png", typeof(BasketPage)),
-					new MasterItem("About", "info.png", typeof(BasketPage))
+					new MasterItem("Baskets", "ic_shopping_basket_black_24dp.png", typeof(BasketPage)), 
+					new MasterItem("Item lookup", "ic_search_black_24dp.png", typeof(BasketPage)),
+					new MasterItem("About", "ic_search_black_24dp.png", typeof(BasketPage))
 				},
 				VerticalOptions = LayoutOptions.FillAndExpand,
 				SeparatorVisibility = SeparatorVisibility.None,
