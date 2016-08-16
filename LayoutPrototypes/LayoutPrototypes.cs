@@ -174,7 +174,7 @@ namespace LayoutPrototypes
 			var list = new ListView
 			{
 				ItemsSource = new List<MasterItem> {
-					new MasterItem("Overview", "home.png", typeof(BasketPage)),
+					new MasterItem("Overview", "ic_home_black_24dp.png", typeof(BasketPage)),
 					new MasterItem("Baskets", "basket.png", typeof(BasketPage)), 
 					new MasterItem("Item lookup", "search.png", typeof(BasketPage)),
 					new MasterItem("About", "info.png", typeof(BasketPage))
@@ -182,10 +182,14 @@ namespace LayoutPrototypes
 				VerticalOptions = LayoutOptions.FillAndExpand,
 				SeparatorVisibility = SeparatorVisibility.None,
 				ItemTemplate = new DataTemplate(() => {
-				   	var t = new ImageCell();
-  				    t.SetBinding(ImageCell.TextProperty, "Title");
-					t.SetBinding(ImageCell.ImageSourceProperty, "Icon");
-					return t;
+					var cell = new StackLayout { Orientation = StackOrientation.Horizontal, Padding = new Thickness(10) };
+					var image = new Image();
+					var label = new Label { VerticalTextAlignment = TextAlignment.Center };
+					cell.Children.Add(image);
+					cell.Children.Add(label);
+  				    label.SetBinding(Label.TextProperty, "Title");
+					image.SetBinding(Image.SourceProperty, "Icon");
+					return new ViewCell { View = cell };
 			   })
 			};
 
@@ -194,6 +198,12 @@ namespace LayoutPrototypes
 				go(selectedItem);
 			};
 
+			var layout = new StackLayout();
+			var imageLayout = new AbsoluteLayout();
+			var brand = new Label { Text = "My brand" };
+			imageLayout.Children.Add(brand, new Rectangle(0.5, 0.5, .8, .8), AbsoluteLayoutFlags.All);
+			layout.Children.Add(imageLayout);
+			layout.Children.Add(list);
 			this.Content = list;
 			this.Title = "Master page";
 		}
