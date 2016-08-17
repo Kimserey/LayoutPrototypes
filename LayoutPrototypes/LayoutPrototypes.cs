@@ -1,18 +1,22 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using Xamarin.Forms;
+using Plugin.Media;
+using Plugin.Media.Abstractions;
 
 namespace LayoutPrototypes
 {
 
 	public class AddItemPage : ContentPage
 	{
-		public Layout<View> MakePriceLayout(string name, Color color) { 
-			var layout = new AbsoluteLayout();
-			layout.Children.Add(new Label { Text = name, VerticalTextAlignment = TextAlignment.Center }, new Rectangle(0, 0, .5, .5), AbsoluteLayoutFlags.All);
-			layout.Children.Add(new Label { Text = "Waitrose", VerticalTextAlignment = TextAlignment.Center }, new Rectangle(0, 1, .5, .5), AbsoluteLayoutFlags.All);
-			layout.Children.Add(new Label { Text = "$10.00", HorizontalTextAlignment = TextAlignment.End, VerticalTextAlignment = TextAlignment.Center }, new Rectangle(1, .5, .5, .5), AbsoluteLayoutFlags.All);
+		public View MakePriceLayout(string name, Color textColor, Color color) {
+			var layout = new AbsoluteLayout { Padding = new Thickness(5), BackgroundColor = color };
+			layout.Children.Add(new Label { Text = name, TextColor = textColor, VerticalTextAlignment = TextAlignment.Center }, new Rectangle(0, 0, .5, .5), AbsoluteLayoutFlags.All);
+			layout.Children.Add(new Label { Text = "Waitrose", TextColor = textColor, VerticalTextAlignment = TextAlignment.Center }, new Rectangle(0, 1, .5, .5), AbsoluteLayoutFlags.All);
+			layout.Children.Add(new Label { Text = "$10.00", TextColor = textColor, HorizontalTextAlignment = TextAlignment.End, VerticalTextAlignment = TextAlignment.Center }, new Rectangle(1, .5, .5, .5), AbsoluteLayoutFlags.All);
 			return layout;
 		}
 
@@ -26,15 +30,15 @@ namespace LayoutPrototypes
 
 			var name = new Entry { Placeholder = "Name" };
 			var price = new Entry { Placeholder = "Price", Keyboard = Keyboard.Numeric };
-			var low = MakePriceLayout("Low", Color.Accent);
-			var avg = MakePriceLayout("Average", Color.Accent);
-			var high = MakePriceLayout("High", Color.Accent); 
+			var low = MakePriceLayout("Low", Color.White, Color.Purple);
+			var avg = MakePriceLayout("Average", Color.White, Color.Teal);
+			var high = MakePriceLayout("High", Color.White, Color.Red); 
 
-			var sideLayout = new StackLayout { Margin = new Thickness(20) };
+			var sideLayout = new StackLayout { Margin = new Thickness(5) };
 			sideLayout.Children.Add(name);
 			sideLayout.Children.Add(price);
 			sideLayout.Children.Add(low);
-			sideLayout.Children.Add(new Frame { Padding = new Thickness(5), Content = avg, BackgroundColor = Color.Accent });
+			sideLayout.Children.Add(avg);
 			sideLayout.Children.Add(high);
 			layout.Children.Add(sideLayout, 1, 0);
 
@@ -53,6 +57,7 @@ namespace LayoutPrototypes
 						new DataTemplate(() =>
 						{
 							var template = new TextCell();
+							template.TextColor = Color.Gray;
 							template.SetBinding(TextCell.TextProperty, ".");
 							return template;
 						}),
@@ -209,13 +214,63 @@ namespace LayoutPrototypes
 		}
 	}
 
+	public class PhotoPage : ContentPage {
+		public PhotoPage() {
+
+			var image = new Image();
+
+			var buttonTakePhoto = new Button { Text = "Take a photo" };
+			buttonTakePhoto.Clicked += async (sender, e) => 
+			{
+				if (!CrossMedia.Current.IsCameraAvailable || !CrossMedia.Current.IsTakePhotoSupported)
+				{
+					await DisplayAlert("No Camera", ":( No camera avaialble.", "OK");
+					return;
+				}
+
+				var file = await CrossMedia.Current.TakePhotoAsync(new StoreCameraMediaOptions
+				{
+					Directory = "Sample",
+					Name = "test.jpg"
+				});
+
+				if (file == null)
+					return;
+
+				await DisplayAlert("Path", file.AlbumPath + "\n" + file.Path, "OK");
+				image.Source = file.Path;
+			};
+
+
+			var buttonPick = new Button { Text = "Pick a photo" };
+			buttonPick.Clicked += async (sender, args) =>
+			{
+				if (!CrossMedia.Current.IsPickPhotoSupported)
+				{
+					await DisplayAlert("Photos Not Supported", ":( Permission not granted to photos.", "OK");
+					return;
+				}
+				var file = await CrossMedia.Current.PickPhotoAsync();
+
+
+				if (file == null)
+					return;
+
+				image.Source = file.Path;
+
+			};
+
+			this.Content = new StackLayout { Children = { image, buttonTakePhoto, buttonPick } };
+		}
+	}
+
 	public class MainPage : MasterDetailPage {
 
 		public MainPage()
 		{
 			this.Title = "Basket";
 
-			this.Detail = new NavigationPage(new BasketPage());
+			this.Detail = new NavigationPage(new PhotoPage());
 			this.Master = new MasterPage(x => {
 				this.IsPresented = false;
 			});
