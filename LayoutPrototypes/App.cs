@@ -83,7 +83,7 @@ namespace LayoutPrototypes
 	{
 		public App()
 		{
-			MainPage = new AbsoluteLayoutTest();
+			MainPage = new TabPage();
 		}
 	}
 }
