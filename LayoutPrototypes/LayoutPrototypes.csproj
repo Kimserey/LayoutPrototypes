@@ -32,6 +32,9 @@
   <ItemGroup>
     <Compile Include="LayoutPrototypes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="AbsoluteLayoutTest.cs" />
+    <Compile Include="RelativeLayoutTest.cs" />
+    <Compile Include="App.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Xamarin.Forms.Core">

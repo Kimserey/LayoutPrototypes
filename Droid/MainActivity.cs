@@ -22,6 +22,7 @@ namespace LayoutPrototypes.Droid
 			base.OnCreate(bundle);
 
 			global::Xamarin.Forms.Forms.Init(this, bundle);
+//			FFImageLoading.Forms.Droid.CachedImageRenderer.Init();
 
 			LoadApplication(new App());
 		}
