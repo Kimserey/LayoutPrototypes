@@ -8,6 +8,7 @@ using Android.Views;
 using Android.Widget;
 using Android.OS;
 using Plugin.CurrentActivity;
+using FFImageLoading.Forms.Droid;
 
 namespace LayoutPrototypes.Droid
 {
@@ -22,7 +23,7 @@ namespace LayoutPrototypes.Droid
 			base.OnCreate(bundle);
 
 			global::Xamarin.Forms.Forms.Init(this, bundle);
-//			FFImageLoading.Forms.Droid.CachedImageRenderer.Init();
+			CachedImageRenderer.Init();
 
 			LoadApplication(new App());
 		}
