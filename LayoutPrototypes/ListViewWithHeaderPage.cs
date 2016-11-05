@@ -38,21 +38,21 @@ namespace LayoutPrototypes
 					"eee"
 				};
 
+			var headerGrid = new Grid { ColumnSpacing = 5, HeightRequest = 80 };
+			headerGrid.ColumnDefinitions.Add(new ColumnDefinition());
+			headerGrid.ColumnDefinitions.Add(new ColumnDefinition());
+			headerGrid.ColumnDefinitions.Add(new ColumnDefinition());
+			headerGrid.Children.Add(new BoxView { BackgroundColor = Color.Blue }, 0, 0);
+			headerGrid.Children.Add(new BoxView { BackgroundColor = Color.Blue }, 1, 0);
+			headerGrid.Children.Add(new BoxView { BackgroundColor = Color.Blue }, 2, 0);
+
 			var header = 
 				new StackLayout { 
 					Padding = 5,
-					Children = { 
-						new Label { Text = "Quick access" },
-						new StackLayout { 
-							Orientation = StackOrientation.Horizontal,
-							Spacing = 2,
-							Children = {
-								new BoxView { BackgroundColor = Color.Blue },
-								new BoxView { BackgroundColor = Color.Blue },
-								new BoxView { BackgroundColor = Color.Blue },
-							}
-						},
-						new Label { Text = "Stores" }
+					Children = {
+						new Label { Text = "Quick access (with most recent added baskets)", FontSize = 10, FontAttributes = FontAttributes.Bold },
+						headerGrid,
+						new Label { Text = "All stores (alphabetical order)", FontSize = 10, FontAttributes = FontAttributes.Bold }
 					}
 				};
 
