@@ -81,6 +81,7 @@ namespace LayoutPrototypes
 	{
 		public TabPage()
 		{
+			Children.Add(new ListViewPage());
 			Children.Add(new AbsoluteLayoutTest());
 			Children.Add(new RelativeLayoutTest());
 		}

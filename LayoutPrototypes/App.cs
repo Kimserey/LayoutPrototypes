@@ -83,7 +83,9 @@ namespace LayoutPrototypes
 	{
 		public App()
 		{
-			MainPage = new TabPage();
+			//MainPage = new TabPage();
+			//MainPage = new ListViewPage();
+			MainPage = new ListViewWithHeaderPage();
 		}
 	}
 }
