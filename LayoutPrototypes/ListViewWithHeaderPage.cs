@@ -1,15 +1,94 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Runtime.CompilerServices;
 using Xamarin.Forms;
 
 namespace LayoutPrototypes
 {
-	public class StoreHeaderTemplate : ViewCell
+	public class HeaderViewModel : INotifyPropertyChanged
 	{
+		private QuickAccess quickAccess1;
+
+		public event PropertyChangedEventHandler PropertyChanged;
+
+		public QuickAccess QuickAccess1
+		{
+			get { return quickAccess1; }
+			set {
+				quickAccess1 = value;
+				OnPropertyChanged();
+			}
+		}
+
+		void OnPropertyChanged([CallerMemberName] string propertyName = null)
+		{
+			var handler = PropertyChanged;
+			if (handler != null)
+			{
+				handler(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+
+		public HeaderViewModel()
+		{
+			this.QuickAccess1 = new QuickAccess { Label = "Test", Color = Color.Red };
+		}
+	}
+
+
+	public class QuickAccess
+	{
+		public string Label { get; set; }
+		public Color Color { get; set; } 
+	}
+
+	public class StoreHeaderTemplate : Grid
+	{
+		public Label QuickAccess1Name { get; set; }
+		public BoxView QuickAccess1Box { get; set; }
+
+		public QuickAccess QuickAccess1 { 
+			get { return (QuickAccess)GetValue(QuickAccess1Property); }
+			set { SetValue(QuickAccess1Property, value); }
+		}
+
+		public static BindableProperty QuickAccess1Property =
+			BindableProperty.Create(
+				nameof(QuickAccess1),
+				typeof(QuickAccess),
+				typeof(StoreHeaderTemplate),
+				null, 
+				propertyChanged: (bindable, oldValue, newValue) => {
+					if (newValue != null)
+					{
+						var elt = (StoreHeaderTemplate)bindable;
+						var quickAccess = (QuickAccess)newValue;
+						elt.QuickAccess1Name.Text = quickAccess.Label;
+						elt.QuickAccess1Box.Color = quickAccess.Color;
+					}
+				});
+
 		public StoreHeaderTemplate()
 		{
+			QuickAccess1Box = new BoxView();
+			QuickAccess1Name = new Label();
 
+			this.ColumnSpacing = 5;
+			this.ColumnDefinitions.Add(new ColumnDefinition());
+			this.ColumnDefinitions.Add(new ColumnDefinition());
+			this.ColumnDefinitions.Add(new ColumnDefinition());
+			this.RowDefinitions.Add(new RowDefinition());
+			this.RowDefinitions.Add(new RowDefinition { Height = new GridLength(50, GridUnitType.Absolute) });
+			this.RowDefinitions.Add(new RowDefinition());
+			this.Children.Add(new Label { Text = "Quick access (with most recent added baskets)", FontSize = 10, FontAttributes = FontAttributes.Bold }, 0, 3, 0, 1);
+			this.Children.Add(QuickAccess1Box, 0, 1);
+			this.Children.Add(QuickAccess1Name, 0, 1);
+			this.Children.Add(new BoxView { BackgroundColor = Color.Blue }, 1, 1);
+			this.Children.Add(new BoxView { BackgroundColor = Color.Blue }, 2, 1);
+			this.Children.Add(new Label { Text = "All stores (alphabetical order)", FontSize = 10, FontAttributes = FontAttributes.Bold }, 0, 3, 2, 3);
 		}
 	}
 
@@ -18,53 +97,20 @@ namespace LayoutPrototypes
 		public ListViewWithHeaderPage()
 		{
 			var list = new ListView(ListViewCachingStrategy.RecycleElement);
-			list.ItemsSource = 
-				new List<string> { 
-					"hey", 
-					"ho", 
-					"hi", 
-					"eee",
-					"hey", 
-					"ho", 
-					"hi", 
-					"eee",
-					"hey",
-					"ho",
-					"hi",
-					"eee",
-					"hey",
-					"ho",
-					"hi",
-					"eee",
-					"hey",
-					"ho",
-					"hi",
-					"eee",
-					"hey",
-					"ho",
-					"hi",
-					"eee"
-				};
+			list.ItemsSource = Enumerable.Range(0, 30).Select(arg => "Something " + arg).ToList();
 
-			var headerGrid = new Grid { ColumnSpacing = 5, HeightRequest = 80 };
-			headerGrid.ColumnDefinitions.Add(new ColumnDefinition());
-			headerGrid.ColumnDefinitions.Add(new ColumnDefinition());
-			headerGrid.ColumnDefinitions.Add(new ColumnDefinition());
-			headerGrid.Children.Add(new BoxView { BackgroundColor = Color.Blue }, 0, 0);
-			headerGrid.Children.Add(new BoxView { BackgroundColor = Color.Blue }, 1, 0);
-			headerGrid.Children.Add(new BoxView { BackgroundColor = Color.Blue }, 2, 0);
+			list.Header = new HeaderViewModel();
+			list.HeaderTemplate = new DataTemplate(() => {
+				var template = new StoreHeaderTemplate();
+				template.SetBinding(StoreHeaderTemplate.QuickAccess1Property, "QuickAccess1");
+				return (object)template;
+			});
 
-			var header = 
-				new StackLayout { 
-					Padding = 5,
-					Children = {
-						new Label { Text = "Quick access (with most recent added baskets)", FontSize = 10, FontAttributes = FontAttributes.Bold },
-						headerGrid,
-						new Label { Text = "All stores (alphabetical order)", FontSize = 10, FontAttributes = FontAttributes.Bold }
-					}
-				};
-			list.hea
-			list.Header = header;
+			var button = new Button { Text = "Make blue" };
+			button.Clicked += (sender, e) => {
+				((HeaderViewModel)list.Header).QuickAccess1 = new QuickAccess { Color = Color.Blue, Label = "It's blue now" };
+			};
+			list.Footer = button;
 
 			Content = new StackLayout
 			{
