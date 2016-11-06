@@ -50,11 +50,14 @@ namespace LayoutPrototypes
 		public Label QuickAccess1Name { get; set; }
 		public BoxView QuickAccess1Box { get; set; }
 
-		public StoreHeaderTemplate()
+		public StoreHeaderTemplate(Action<string> goTo1)
 		{
 			QuickAccess1Box = new BoxView();
 			QuickAccess1Name = new Label { FontSize = 9, BackgroundColor = Color.Blue.MultiplyAlpha(0.5), VerticalTextAlignment = TextAlignment.Center, HorizontalTextAlignment = TextAlignment.Center };
-
+			QuickAccess1Box.GestureRecognizers.Add(new TapGestureRecognizer { 
+				Command = new Command((obj) => { goTo1(QuickAccess1Name.Text); })
+			});
+			                                       
 			this.Margin = 5;
 			this.ColumnSpacing = 5;
 			this.ColumnDefinitions.Add(new ColumnDefinition());
@@ -86,7 +89,7 @@ namespace LayoutPrototypes
 			// Not sure why but the template IS NOT a ViewCell.
 			// Passing a ViewCell will crash the header with an incorrect value error.
 			list.HeaderTemplate = new DataTemplate(() => {
-				var template = new StoreHeaderTemplate();
+				var template = new StoreHeaderTemplate(async arg => await this.DisplayAlert("Navigate", "Go to page " + arg, "Ok"));
 				//template.SetBinding(StoreHeaderTemplate.QuickAccess1Property, "QuickAccess1");
 				template.QuickAccess1Box.SetBinding(BoxView.ColorProperty, "QuickAccess1.Color");
 				template.QuickAccess1Name.SetBinding(Label.TextProperty, "QuickAccess1.Label");
