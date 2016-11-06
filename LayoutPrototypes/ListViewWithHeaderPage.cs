@@ -53,7 +53,13 @@ namespace LayoutPrototypes
 		public StoreHeaderTemplate(Action<string> goTo1)
 		{
 			QuickAccess1Box = new BoxView();
-			QuickAccess1Name = new Label { FontSize = 9, BackgroundColor = Color.Blue.MultiplyAlpha(0.5), VerticalTextAlignment = TextAlignment.Center, HorizontalTextAlignment = TextAlignment.Center };
+			QuickAccess1Name = 
+				new Label { 
+					FontSize = 9, 
+					BackgroundColor = Color.Blue.MultiplyAlpha(0.5), 
+					VerticalTextAlignment = TextAlignment.Center, 
+					HorizontalTextAlignment = TextAlignment.Center 
+				};
 			QuickAccess1Box.GestureRecognizers.Add(new TapGestureRecognizer { 
 				Command = new Command((obj) => { goTo1(QuickAccess1Name.Text); })
 			});
@@ -83,7 +89,7 @@ namespace LayoutPrototypes
 			var list = new ListView(ListViewCachingStrategy.RecycleElement);
 			list.ItemsSource = Enumerable.Range(0, 20).Select(arg => "Something " + arg).ToList();
 
-			list.Header = new HeaderViewModel();
+			var vm = new HeaderViewModel();
 
 			// Had to set the binding within the datatemplate.
 			// Not sure why but the template IS NOT a ViewCell.
@@ -102,10 +108,21 @@ namespace LayoutPrototypes
 			};
 			list.Footer = button;
 
+			list.SetBinding(ListView.HeaderProperty, ".");
+			this.BindingContext = vm;
+
+			var label = 
+				new Label { 
+					VerticalTextAlignment = TextAlignment.Center,
+					HorizontalTextAlignment = TextAlignment.Center
+				};
+			label.SetBinding(Label.TextProperty, "QuickAccess1.Label");
+
 			Content = new StackLayout
 			{
 				Children = {
-					list
+					list,
+					label
 				}
 			};
 		}
