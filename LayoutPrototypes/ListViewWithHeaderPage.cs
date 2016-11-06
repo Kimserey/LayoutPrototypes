@@ -5,6 +5,14 @@ using Xamarin.Forms;
 
 namespace LayoutPrototypes
 {
+	public class StoreHeaderTemplate : ViewCell
+	{
+		public StoreHeaderTemplate()
+		{
+
+		}
+	}
+
 	public class ListViewWithHeaderPage : ContentPage
 	{
 		public ListViewWithHeaderPage()
@@ -55,7 +63,7 @@ namespace LayoutPrototypes
 						new Label { Text = "All stores (alphabetical order)", FontSize = 10, FontAttributes = FontAttributes.Bold }
 					}
 				};
-
+			list.hea
 			list.Header = header;
 
 			Content = new StackLayout
