@@ -4,4 +4,4 @@
 
 ![img1](https://raw.githubusercontent.com/Kimserey/LayoutPrototypes/master/img/img1.png)
 
-![img2]()
+![img2](https://raw.githubusercontent.com/Kimserey/LayoutPrototypes/master/img/img2.png)
