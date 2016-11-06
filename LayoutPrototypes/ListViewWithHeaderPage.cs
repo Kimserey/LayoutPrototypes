@@ -74,21 +74,23 @@ namespace LayoutPrototypes
 		public StoreHeaderTemplate()
 		{
 			QuickAccess1Box = new BoxView();
-			QuickAccess1Name = new Label();
+			QuickAccess1Name = new Label { FontSize = 9, BackgroundColor = Color.Blue.MultiplyAlpha(0.5), VerticalTextAlignment = TextAlignment.Center, HorizontalTextAlignment = TextAlignment.Center };
 
+			this.Margin = 5;
 			this.ColumnSpacing = 5;
 			this.ColumnDefinitions.Add(new ColumnDefinition());
 			this.ColumnDefinitions.Add(new ColumnDefinition());
 			this.ColumnDefinitions.Add(new ColumnDefinition());
 			this.RowDefinitions.Add(new RowDefinition());
 			this.RowDefinitions.Add(new RowDefinition { Height = new GridLength(50, GridUnitType.Absolute) });
+			this.RowDefinitions.Add(new RowDefinition { Height = new GridLength(20, GridUnitType.Absolute) });
 			this.RowDefinitions.Add(new RowDefinition());
 			this.Children.Add(new Label { Text = "Quick access (with most recent added baskets)", FontSize = 10, FontAttributes = FontAttributes.Bold }, 0, 3, 0, 1);
-			this.Children.Add(QuickAccess1Box, 0, 1);
-			this.Children.Add(QuickAccess1Name, 0, 1);
-			this.Children.Add(new BoxView { BackgroundColor = Color.Blue }, 1, 1);
-			this.Children.Add(new BoxView { BackgroundColor = Color.Blue }, 2, 1);
-			this.Children.Add(new Label { Text = "All stores (alphabetical order)", FontSize = 10, FontAttributes = FontAttributes.Bold }, 0, 3, 2, 3);
+			this.Children.Add(QuickAccess1Box, 0, 1, 1, 3);
+			this.Children.Add(QuickAccess1Name, 0, 1, 2, 3);
+			this.Children.Add(new BoxView { BackgroundColor = Color.Blue }, 1, 2, 1, 3);
+			this.Children.Add(new BoxView { BackgroundColor = Color.Blue }, 2, 3, 1, 3);
+			this.Children.Add(new Label { Text = "All stores (alphabetical order)", FontSize = 10, FontAttributes = FontAttributes.Bold }, 0, 3, 3, 4);
 		}
 	}
 
@@ -97,13 +99,17 @@ namespace LayoutPrototypes
 		public ListViewWithHeaderPage()
 		{
 			var list = new ListView(ListViewCachingStrategy.RecycleElement);
-			list.ItemsSource = Enumerable.Range(0, 30).Select(arg => "Something " + arg).ToList();
+			list.ItemsSource = Enumerable.Range(0, 20).Select(arg => "Something " + arg).ToList();
 
 			list.Header = new HeaderViewModel();
+
+			// Had to set the binding within the datatemplate.
+			// Not sure why but the template IS NOT a ViewCell.
+			// Passing a ViewCell will crash the header with an incorrect value error.
 			list.HeaderTemplate = new DataTemplate(() => {
 				var template = new StoreHeaderTemplate();
 				template.SetBinding(StoreHeaderTemplate.QuickAccess1Property, "QuickAccess1");
-				return (object)template;
+				return template;
 			});
 
 			var button = new Button { Text = "Make blue" };
