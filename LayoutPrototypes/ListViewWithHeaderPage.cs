@@ -50,27 +50,6 @@ namespace LayoutPrototypes
 		public Label QuickAccess1Name { get; set; }
 		public BoxView QuickAccess1Box { get; set; }
 
-		public QuickAccess QuickAccess1 { 
-			get { return (QuickAccess)GetValue(QuickAccess1Property); }
-			set { SetValue(QuickAccess1Property, value); }
-		}
-
-		public static BindableProperty QuickAccess1Property =
-			BindableProperty.Create(
-				nameof(QuickAccess1),
-				typeof(QuickAccess),
-				typeof(StoreHeaderTemplate),
-				null, 
-				propertyChanged: (bindable, oldValue, newValue) => {
-					if (newValue != null)
-					{
-						var elt = (StoreHeaderTemplate)bindable;
-						var quickAccess = (QuickAccess)newValue;
-						elt.QuickAccess1Name.Text = quickAccess.Label;
-						elt.QuickAccess1Box.Color = quickAccess.Color;
-					}
-				});
-
 		public StoreHeaderTemplate()
 		{
 			QuickAccess1Box = new BoxView();
@@ -108,7 +87,9 @@ namespace LayoutPrototypes
 			// Passing a ViewCell will crash the header with an incorrect value error.
 			list.HeaderTemplate = new DataTemplate(() => {
 				var template = new StoreHeaderTemplate();
-				template.SetBinding(StoreHeaderTemplate.QuickAccess1Property, "QuickAccess1");
+				//template.SetBinding(StoreHeaderTemplate.QuickAccess1Property, "QuickAccess1");
+				template.QuickAccess1Box.SetBinding(BoxView.ColorProperty, "QuickAccess1.Color");
+				template.QuickAccess1Name.SetBinding(Label.TextProperty, "QuickAccess1.Label");
 				return template;
 			});
 
